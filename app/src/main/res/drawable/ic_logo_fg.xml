@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- target ring -->
+    <path
+        android:pathData="M54,28 A26,26 0 1,1 54,80 A26,26 0 1,1 54,28 Z"
+        android:strokeColor="#22C55E"
+        android:strokeWidth="3"
+        android:fillColor="#00000000" />
+
+    <!-- crosshair ticks -->
+    <path
+        android:pathData="M54,24 L54,35 M54,73 L54,84 M24,54 L35,54 M73,54 L84,54"
+        android:strokeColor="#22C55E"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
+
+    <!-- candle wicks -->
+    <path
+        android:pathData="M44,44 L44,66 M54,40 L54,68 M64,34 L64,60"
+        android:strokeColor="#E5E7EB"
+        android:strokeWidth="1.5" />
+
+    <!-- candle bodies: red, green, green -->
+    <path
+        android:pathData="M41.5,50 L46.5,50 L46.5,60 L41.5,60 Z"
+        android:fillColor="#EF4444" />
+    <path
+        android:pathData="M51.5,46 L56.5,46 L56.5,62 L51.5,62 Z"
+        android:fillColor="#22C55E" />
+    <path
+        android:pathData="M61.5,38 L66.5,38 L66.5,56 L61.5,56 Z"
+        android:fillColor="#22C55E" />
+</vector>

@@ -8,11 +8,20 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.signaltest"
+        applicationId = "com.supershot.app"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.1"
+        versionCode = 3
+        versionName = "0.2"
+    }
+
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
     }
 
     buildTypes {
