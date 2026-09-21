@@ -59,7 +59,7 @@ class MainActivity : Activity() {
         }
 
         root.addView(label("Super Shot", 26f, true))
-        root.addView(label("v0.2 · ডেমো টেস্ট মোড", 13f))
+        root.addView(label("v0.2.1 · ডেমো টেস্ট মোড", 13f))
         statusView = label("", 16f, true, 8)
         root.addView(statusView)
 
@@ -196,7 +196,7 @@ class MainActivity : Activity() {
     private fun pct(v: Double): String = String.format(Locale.US, "%.1f", v * 100)
 
     private fun shortVerdict(t: com.example.signaltest.engine.Tally, payout: Int, minN: Int): String {
-        val v = LogModel.verdict(t, payout, minN, 2.58)
+        val v = LogModel.verdict(t, payout, minN, 2.91)
         return when {
             v.startsWith("✅") -> "✅"
             v.startsWith("❌") -> "❌"
@@ -230,13 +230,13 @@ class MainActivity : Activity() {
         statsBox.addView(label(sb.toString(), 14f))
 
         var any = false
-        val ps = StringBuilder("সেটআপ অনুযায়ী (৯৯% সীমা, একই সিগন্যাল একাধিক সেটআপে গোনা হয়):\n")
+        val ps = StringBuilder("সেটআপ অনুযায়ী (১৪টা সেটআপ তুলনার জন্য কড়া সীমা z=2.9; একই সিগন্যাল একাধিক সেটআপে গোনা হয়):\n")
         for (id in SignalEngine.SETUP_IDS) {
             val list = data.signals.filter { id in it.setups }
             if (list.isEmpty()) continue
             any = true
             val t = LogModel.tally(list)
-            val ci = Stats.wilson(t.wins, t.n, 2.58)
+            val ci = Stats.wilson(t.wins, t.n, 2.91)
             ps.append("${shortVerdict(t, payout, minN)} $id: n=${t.n}, ${pct(t.rate)}% (${pct(ci[0])}–${pct(ci[1])})\n")
         }
         if (any) statsBox.addView(label(ps.toString().trimEnd(), 13f, false, 8))

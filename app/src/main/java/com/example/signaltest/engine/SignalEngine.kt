@@ -12,7 +12,14 @@ object SignalEngine {
 
     const val MIN_CANDLES = 25
 
-    val SETUP_IDS = listOf("BB_RSI", "EMA_PULLBACK", "SR_REJECT", "REV_PATTERN", "MACD_TREND", "BB_SQUEEZE")
+    val SETUP_IDS = listOf(
+        "BB_RSI", "BB_SQUEEZE", "BB_WALK",
+        "EMA_PULLBACK", "EMA_CROSS",
+        "SR_REJECT", "SR_APPROACH", "SR_BREAKOUT", "ROLE_REVERSAL",
+        "REV_PATTERN",
+        "RSI_DIVERGENCE",
+        "MACD_TREND", "MACD_ZERO", "MACD_HIST"
+    )
 
     fun setupTitle(id: String): String = when (id) {
         "BB_RSI" -> "Bollinger + RSI প্রান্ত"
@@ -21,6 +28,14 @@ object SignalEngine {
         "REV_PATTERN" -> "ক্যান্ডেল রিভার্সাল প্যাটার্ন"
         "MACD_TREND" -> "MACD ক্রস + ট্রেন্ড"
         "BB_SQUEEZE" -> "Bollinger স্কুইজ ব্রেকআউট"
+        "BB_WALK" -> "Bollinger ব্যান্ড ওয়াক (ট্রেন্ড চলছে)"
+        "EMA_CROSS" -> "EMA20/50 ক্রসওভার"
+        "SR_APPROACH" -> "লেভেলের কাছে আসা"
+        "SR_BREAKOUT" -> "লেভেল ব্রেকআউট"
+        "ROLE_REVERSAL" -> "রোল রিভার্সাল (ভাঙা লেভেলে রিটেস্ট)"
+        "RSI_DIVERGENCE" -> "RSI ডাইভারজেন্স"
+        "MACD_ZERO" -> "MACD জিরো লাইন ক্রস"
+        "MACD_HIST" -> "MACD হিস্টোগ্রাম গতি বদল"
         else -> id
     }
 
@@ -53,10 +68,10 @@ object SignalEngine {
 
         // ১. Bollinger প্রান্ত + RSI
         if (!bb.up[i].isNaN() && !rsi[i].isNaN()) {
-            if (c[i] <= bb.low[i] && rsi[i] <= 30.0) {
-                found.add(Setup("BB_RSI", Dir.UP, "দাম নিচের ব্যান্ডে, RSI ${fmt(rsi[i])}"))
-            } else if (c[i] >= bb.up[i] && rsi[i] >= 70.0) {
-                found.add(Setup("BB_RSI", Dir.DOWN, "দাম ওপরের ব্যান্ডে, RSI ${fmt(rsi[i])}"))
+            if (l[i] <= bb.low[i] && rsi[i] <= 30.0) {
+                found.add(Setup("BB_RSI", Dir.UP, "নিচের ব্যান্ড ছুঁয়েছে, RSI ${fmt(rsi[i])}"))
+            } else if (h[i] >= bb.up[i] && rsi[i] >= 70.0) {
+                found.add(Setup("BB_RSI", Dir.DOWN, "ওপরের ব্যান্ড ছুঁয়েছে, RSI ${fmt(rsi[i])}"))
             }
         }
 
@@ -135,6 +150,131 @@ object SignalEngine {
             }
         }
 
+
+        // ৭. Bollinger ব্যান্ড ওয়াক: শেষ ৪ ক্যান্ডেলের অন্তত ৩টির ক্লোজ ব্যান্ড ঘেঁষে
+        if (i >= 3 && !bb.up[i - 3].isNaN()) {
+            var upCnt = 0
+            var loCnt = 0
+            for (k in i - 3..i) {
+                if (c[k] >= bb.up[k] - 0.1 * atr) upCnt++
+                if (c[k] <= bb.low[k] + 0.1 * atr) loCnt++
+            }
+            if (upCnt >= 3 && c[i] > o[i]) found.add(Setup("BB_WALK", Dir.UP, "ওপরের ব্যান্ড ধরে উঠছে"))
+            else if (loCnt >= 3 && c[i] < o[i]) found.add(Setup("BB_WALK", Dir.DOWN, "নিচের ব্যান্ড ধরে নামছে"))
+        }
+
+        // ৮. EMA20/50 ক্রসওভার (শেষ ২ ক্যান্ডেলের মধ্যে ঘটেছে)
+        if (i >= 3 && !ema50[i - 2].isNaN() && !ema20[i].isNaN()) {
+            val crossUp = (ema20[i - 1] <= ema50[i - 1] && ema20[i] > ema50[i]) ||
+                (ema20[i - 2] <= ema50[i - 2] && ema20[i - 1] > ema50[i - 1] && ema20[i] > ema50[i])
+            val crossDn = (ema20[i - 1] >= ema50[i - 1] && ema20[i] < ema50[i]) ||
+                (ema20[i - 2] >= ema50[i - 2] && ema20[i - 1] < ema50[i - 1] && ema20[i] < ema50[i])
+            if (crossUp && c[i] > ema20[i]) found.add(Setup("EMA_CROSS", Dir.UP, "EMA20 ওপরে ক্রস করেছে EMA50"))
+            else if (crossDn && c[i] < ema20[i]) found.add(Setup("EMA_CROSS", Dir.DOWN, "EMA20 নিচে ক্রস করেছে EMA50"))
+        }
+
+        // ৯. সাপোর্ট/রেজিস্ট্যান্স: কাছে আসা / ব্রেকআউট / রোল রিভার্সাল
+        if (i >= 3) {
+            var approach = false
+            var breakout = false
+            var role = false
+            for (lv in levels) {
+                if (!approach && !rsi[i].isNaN()) {
+                    if (c[i] < lv && h[i] < lv - 0.05 * atr && lv - c[i] <= 0.5 * atr && c[i] > c[i - 2] && rsi[i] >= 60.0) {
+                        found.add(Setup("SR_APPROACH", Dir.DOWN, "রেজিস্ট্যান্সের কাছে উঠছে, RSI ${fmt(rsi[i])}"))
+                        approach = true
+                    } else if (c[i] > lv && l[i] > lv + 0.05 * atr && c[i] - lv <= 0.5 * atr && c[i] < c[i - 2] && rsi[i] <= 40.0) {
+                        found.add(Setup("SR_APPROACH", Dir.UP, "সাপোর্টের কাছে নামছে, RSI ${fmt(rsi[i])}"))
+                        approach = true
+                    }
+                }
+                if (!breakout) {
+                    val body = abs(c[i] - o[i])
+                    if (c[i - 1] <= lv + 0.1 * atr && c[i] >= lv + 0.25 * atr && c[i] > o[i] && body >= 0.5 * atr) {
+                        found.add(Setup("SR_BREAKOUT", Dir.UP, "রেজিস্ট্যান্স ভেঙে ওপরে"))
+                        breakout = true
+                    } else if (c[i - 1] >= lv - 0.1 * atr && c[i] <= lv - 0.25 * atr && c[i] < o[i] && body >= 0.5 * atr) {
+                        found.add(Setup("SR_BREAKOUT", Dir.DOWN, "সাপোর্ট ভেঙে নিচে"))
+                        breakout = true
+                    }
+                }
+                if (!role && i >= 8) {
+                    val from = max(0, i - 30)
+                    // আগে নিচে ছিল, তারপর ওপরে ভেঙেছে, ওপরে টিকেছে, এখন রিটেস্ট
+                    var kFirst = -1
+                    for (k in max(0, i - 15)..i - 3) if (c[k] >= lv + 0.25 * atr) { kFirst = k; break }
+                    if (kFirst > 0) {
+                        var was = false
+                        for (j in from until kFirst) if (c[j] <= lv - 0.25 * atr) { was = true; break }
+                        var hold = true
+                        for (m in kFirst until i) if (c[m] < lv - 0.35 * atr) { hold = false; break }
+                        if (was && hold && l[i] <= lv + 0.3 * atr && c[i] >= lv && c[i] > o[i]) {
+                            found.add(Setup("ROLE_REVERSAL", Dir.UP, "ভাঙা রেজিস্ট্যান্স এখন সাপোর্ট, রিটেস্ট থেকে উঠছে"))
+                            role = true
+                        }
+                    }
+                    if (!role) {
+                        var kf = -1
+                        for (k in max(0, i - 15)..i - 3) if (c[k] <= lv - 0.25 * atr) { kf = k; break }
+                        if (kf > 0) {
+                            var was = false
+                            for (j in from until kf) if (c[j] >= lv + 0.25 * atr) { was = true; break }
+                            var hold = true
+                            for (m in kf until i) if (c[m] > lv + 0.35 * atr) { hold = false; break }
+                            if (was && hold && h[i] >= lv - 0.3 * atr && c[i] <= lv && c[i] < o[i]) {
+                                found.add(Setup("ROLE_REVERSAL", Dir.DOWN, "ভাঙা সাপোর্ট এখন রেজিস্ট্যান্স, রিটেস্ট থেকে নামছে"))
+                                role = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // ১০. RSI ডাইভারজেন্স
+        if (i >= 8 && !rsi[i].isNaN()) {
+            // লুকব্যাকে সবচেয়ে নিচের সুইং লো ও সবচেয়ে ওপরের সুইং হাই (সমান হলে নতুনটা)
+            var pLow = -1
+            var pHigh = -1
+            for (m in i - 4 downTo max(2, i - 30)) {
+                if (cs[m].cut || rsi[m].isNaN()) continue
+                if (l[m] <= l[m - 1] && l[m] <= l[m - 2] && l[m] <= l[m + 1] && l[m] <= l[m + 2]) {
+                    if (pLow < 0 || l[m] < l[pLow]) pLow = m
+                }
+                if (h[m] >= h[m - 1] && h[m] >= h[m - 2] && h[m] >= h[m + 1] && h[m] >= h[m + 2]) {
+                    if (pHigh < 0 || h[m] > h[pHigh]) pHigh = m
+                }
+            }
+            if (pLow >= 0 && l[i] <= l[pLow] - 0.1 * atr && rsi[i] >= rsi[pLow] + 3.0 && rsi[i] <= 45.0 && c[i] > o[i]) {
+                found.add(Setup("RSI_DIVERGENCE", Dir.UP, "দাম নতুন লো, RSI ${fmt(rsi[i])} > আগের ${fmt(rsi[pLow])}"))
+            } else if (pHigh >= 0 && h[i] >= h[pHigh] + 0.1 * atr && rsi[i] <= rsi[pHigh] - 3.0 && rsi[i] >= 55.0 && c[i] < o[i]) {
+                found.add(Setup("RSI_DIVERGENCE", Dir.DOWN, "দাম নতুন হাই, RSI ${fmt(rsi[i])} < আগের ${fmt(rsi[pHigh])}"))
+            }
+        }
+
+        // ১১. MACD জিরো লাইন ক্রস
+        if (i >= 1 && !macd.line[i].isNaN() && !macd.line[i - 1].isNaN() && !macd.hist[i].isNaN()) {
+            if (macd.line[i - 1] <= 0 && macd.line[i] > 0 && macd.hist[i] > 0) {
+                found.add(Setup("MACD_ZERO", Dir.UP, "MACD লাইন জিরোর ওপরে উঠেছে"))
+            } else if (macd.line[i - 1] >= 0 && macd.line[i] < 0 && macd.hist[i] < 0) {
+                found.add(Setup("MACD_ZERO", Dir.DOWN, "MACD লাইন জিরোর নিচে নেমেছে"))
+            }
+        }
+
+        // ১২. MACD হিস্টোগ্রাম: ৩ ক্যান্ডেল ধরে গতি কমছে/বাড়ছে, রঙ উল্টো দিকে
+        if (i >= 8 && !macd.hist[i - 2].isNaN() && !macd.hist[i - 6].isNaN()) {
+            var maxAbs = 0.0
+            for (k in i - 6..i - 2) maxAbs = max(maxAbs, abs(macd.hist[k]))
+            if (maxAbs >= 0.1 * atr) {
+                val hh = macd.hist
+                if (hh[i] < 0 && hh[i] > hh[i - 1] && hh[i - 1] > hh[i - 2] && c[i] > o[i]) {
+                    found.add(Setup("MACD_HIST", Dir.UP, "নিচের দিকের গতি কমছে"))
+                } else if (hh[i] > 0 && hh[i] < hh[i - 1] && hh[i - 1] < hh[i - 2] && c[i] < o[i]) {
+                    found.add(Setup("MACD_HIST", Dir.DOWN, "ওপরের দিকের গতি কমছে"))
+                }
+            }
+        }
+
         val info = "RSI ${fmt(rsi[i])} | ATR ${fmt(atr)}px | ক্যান্ডেল $n | লেভেল ${levels.size}" +
             (if (reading.gaps > 0) " | ঢাকা ${reading.gaps}" else "")
 
@@ -197,6 +337,14 @@ object Patterns {
         if (rng >= 0.8 * atr) {
             if (lowerW >= 2 * body && lowerW >= 0.55 * rng && upperW <= 0.25 * rng) bull.add("Hammer")
             if (upperW >= 2 * body && upperW >= 0.55 * rng && lowerW <= 0.25 * rng) bear.add("ShootingStar")
+        }
+
+        if (rng >= 0.8 * atr && body <= 0.1 * rng && n >= 5) {
+            if (c[i - 1] < c[i - 4]) bull.add("Doji") else if (c[i - 1] > c[i - 4]) bear.add("Doji")
+        }
+        if (!cs[i - 1].cut && !cs[i - 2].cut && rng >= atr) {
+            if (lowerW >= 0.66 * rng && l[i] < l[i - 1] && l[i] < l[i - 2]) bull.add("PinBar")
+            if (upperW >= 0.66 * rng && h[i] > h[i - 1] && h[i] > h[i - 2]) bear.add("PinBar")
         }
 
         if (!cs[i - 1].cut) {
