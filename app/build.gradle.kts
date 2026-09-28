@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.signaltest"
+    namespace = "com.supershot.app"
     compileSdk = 34
 
     defaultConfig {
         applicationId = "com.supershot.app"
         minSdk = 29
         targetSdk = 34
-        versionCode = 4
-        versionName = "0.2.1"
+        versionCode = 7
+        versionName = "0.2.4"
     }
 
     signingConfigs {

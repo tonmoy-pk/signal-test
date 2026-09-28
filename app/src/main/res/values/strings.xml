@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English (default). Every value goes through String.format, so a literal percent sign is written %%. -->
+<resources>
+    <string name="lang_label">ভাষা / Language</string>
+
+    <!-- Main screen -->
+    <string name="status_running">● Running</string>
+    <string name="status_stopped">○ Stopped</string>
+    <string name="btn_start">▶ Start</string>
+    <string name="btn_stop">■ Stop</string>
+    <string name="settings">Settings</string>
+    <string name="set_tf">Candle timeframe (minutes)</string>
+    <string name="set_lead">Signal seconds before candle close</string>
+    <string name="set_offset">Clock offset (vs broker)</string>
+    <string name="set_payout">Payout %%</string>
+    <string name="set_minsetups">Minimum agreeing setups</string>
+    <string name="set_minsamples">Minimum signals before verdict</string>
+    <string name="unit_min">%s min</string>
+    <string name="unit_sec">%s s</string>
+    <string name="unit_pct">%s%%</string>
+    <string name="unit_count">%s</string>
+    <string name="debug_switch">Save debug images (Pictures/SuperShot)</string>
+
+    <string name="results_title">Results</string>
+    <string name="btn_export">Export CSV</string>
+    <string name="export_ok">Saved to Downloads/%s</string>
+    <string name="export_fail">Export failed</string>
+    <string name="btn_clear">Clear log</string>
+    <string name="clear_title">Clear log?</string>
+    <string name="clear_msg">All signals and results will be deleted and counting will restart from 0.</string>
+    <string name="clear_yes">Clear</string>
+    <string name="clear_no">Cancel</string>
+
+    <string name="howto_title">How to use</string>
+    <string name="howto_body">1. Expert Option demo account, candlestick chart, platform indicators turned off.\n2. Zoom the chart out to show at least 55 candles (with fewer, EMA50/MACD stay off; with fewer than 25 there is no signal at all).\n3. After you start, a bubble appears. The set number of seconds before a candle closes, the bubble shows UP / DOWN / WAIT.\n4. If you want, take a demo trade on the signal. In the next minute\'s image the app compares the price at entry time with the price exactly 1 minute later and logs a win or loss (like a real 1-minute trade).\n5. The baseline counts whether price rose or fell every minute, with or without a signal, so you can compare setup results against it. If a result is wrong, tap it in the list below to change it.\n6. Tap the bubble = analyze now (not logged; a debug image is saved). Press and hold for 1 second to stop the app.\n7. At the first candle\'s signal, check that the clock is right: does the ⏱ on the bubble match the Expert Option timer? If not, change the clock offset.</string>
+
+    <string name="stats_total">Total signals: %1$s  |  Resolved: %2$s\n</string>
+    <string name="stats_counts">Wins %1$s  Losses %2$s  Ties %3$s  Void %4$s  Pending %5$s\n</string>
+    <string name="stats_winrate">Win rate: %1$s%%  (95%% range %2$s–%3$s%%)\n</string>
+    <string name="stats_be">Break-even: %1$s%% (payout %2$s%%)\n</string>
+    <string name="stats_profit">Profit/loss at equal stake: %s stakes\n</string>
+    <string name="stats_verdict">Verdict: </string>
+    <string name="baseline_head">Baseline (all minutes, regardless of signals): %s minutes\n</string>
+    <string name="baseline_updown">Price rose %1$s%% | fell %2$s%% in 1 minute</string>
+    <string name="baseline_same">\nMoved the same way as the previous minute: %1$s%% (95%% range %2$s–%3$s%%, n=%4$s)</string>
+    <string name="setup_head">By setup (stricter bound z=2.9 because 14 setups are compared; one signal is counted under every setup that fired):\n</string>
+    <string name="skips">WAIT/skips: %s</string>
+    <string name="recent_title">Recent signals (tap to change result)</string>
+    <string name="res_win">✅ Win</string>
+    <string name="res_loss">❌ Loss</string>
+    <string name="res_tie">➖ Tie</string>
+    <string name="res_void">❔ Void</string>
+    <string name="res_pending">⏳ Pending</string>
+
+    <string name="verdict_few">Not enough samples (%1$s/%2$s): no verdict yet</string>
+    <string name="verdict_above">✅ Lower bound is above break-even (demo and real results can still differ)</string>
+    <string name="verdict_below">❌ Below break-even: a losing strategy</string>
+    <string name="verdict_unsure">⚠ Uncertain: more samples needed</string>
+
+    <string name="toast_already">Super Shot is already running</string>
+    <string name="toast_overlay">Enable the overlay permission, then come back</string>
+    <string name="toast_capture_denied">Screen capture permission was not granted</string>
+
+    <!-- Service: bubble, notification, toasts -->
+    <string name="svc_started">Super Shot started</string>
+    <string name="svc_error">Could not start: %s</string>
+    <string name="notif_title">Super Shot is running</string>
+    <string name="notif_text">Analyzing a signal at the end of every candle</string>
+    <string name="hist_rate">Past %1$s%% (n=%2$s)</string>
+    <string name="hist_few">Past: %s samples</string>
+    <string name="manual_signal_note">\n(manual, not logged)</string>
+    <string name="manual_wait_note">\n(manual)</string>
+    <string name="bubble_running">▶ running</string>
+
+    <string name="reason_no_setup">No setup</string>
+    <string name="reason_conflict">Conflict (UP+DOWN)</string>
+    <string name="reason_need_more">Needs more confirmation</string>
+    <string name="reason_few_candles">Too few candles, zoom out</string>
+    <string name="reason_hidden_candle">Last candle is covered</string>
+    <string name="reason_no_chart">Chart not found</string>
+    <string name="reason_flat_market">Flat market</string>
+</resources>

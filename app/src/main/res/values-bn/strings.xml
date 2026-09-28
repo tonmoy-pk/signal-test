@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- বাংলা। প্রতিটি মান String.format দিয়ে যায়, তাই % চিহ্ন লিখতে হয় %% -->
+<resources>
+    <string name="lang_label">ভাষা / Language</string>
+
+    <!-- মূল স্ক্রিন -->
+    <string name="status_running">● চলছে</string>
+    <string name="status_stopped">○ বন্ধ</string>
+    <string name="btn_start">▶ শুরু করো</string>
+    <string name="btn_stop">■ বন্ধ করো</string>
+    <string name="settings">সেটিংস</string>
+    <string name="set_tf">ক্যান্ডেল টাইমফ্রেম (মিনিট)</string>
+    <string name="set_lead">সিগন্যাল শেষের কত সেকেন্ড আগে</string>
+    <string name="set_offset">ঘড়ির সমন্বয় (ব্রোকারের সাথে)</string>
+    <string name="set_payout">পেআউট %%</string>
+    <string name="set_minsetups">ন্যূনতম একমত সেটআপ</string>
+    <string name="set_minsamples">সিদ্ধান্তের জন্য ন্যূনতম সিগন্যাল</string>
+    <string name="unit_min">%s মি</string>
+    <string name="unit_sec">%s সে</string>
+    <string name="unit_pct">%s%%</string>
+    <string name="unit_count">%s টি</string>
+    <string name="debug_switch">ডিবাগ ছবি সেভ (Pictures/SuperShot)</string>
+
+    <string name="results_title">ফলাফল</string>
+    <string name="btn_export">CSV এক্সপোর্ট</string>
+    <string name="export_ok">Downloads/%s সেভ হয়েছে</string>
+    <string name="export_fail">এক্সপোর্ট ব্যর্থ</string>
+    <string name="btn_clear">লগ মুছো</string>
+    <string name="clear_title">লগ মুছবে?</string>
+    <string name="clear_msg">সব সিগন্যাল ও ফলাফল মুছে গণনা ০ থেকে শুরু হবে।</string>
+    <string name="clear_yes">মুছো</string>
+    <string name="clear_no">না</string>
+
+    <string name="howto_title">ব্যবহারের নিয়ম</string>
+    <string name="howto_body">1. Expert Option ডেমো অ্যাকাউন্ট, ক্যান্ডেলস্টিক চার্ট, প্ল্যাটফর্মের নিজের ইন্ডিকেটর বন্ধ।\n2. চার্ট জুম আউট করে অন্তত ৫৫টি ক্যান্ডেল দেখাও (কম হলে EMA50/MACD বন্ধ থাকে; ২৫টির কম হলে সিগন্যালই নেই)।\n3. শুরু করলে বাবল আসবে। ক্যান্ডেল শেষের নির্ধারিত সেকেন্ড আগে বাবলে UP / DOWN / WAIT দেখাবে।\n4. চাইলে সিগন্যাল দেখে ডেমোতে ট্রেড নাও। অ্যাপ পরের মিনিটের ছবিতে এন্ট্রির সময়ের দাম আর ঠিক ১ মিনিট পরের দাম মিলিয়ে জিত/হার লগ করে (আসল ১ মিনিটের ট্রেডের মতো)।\n5. বেসলাইন মানে সিগন্যাল থাকুক বা না থাকুক, প্রতি মিনিটে দাম বাড়ল না কমল তার গণনা। সেটআপের ফল এর সাথে তুলনা করার জন্য। ভুল ফলাফল হলে নিচের তালিকায় ট্যাপ করে বদলাও।\n6. বাবলে ট্যাপ = এখনই বিশ্লেষণ (লগ হয় না, ডিবাগ ছবি সেভ হয়)। ১ সেকেন্ড চেপে ধরলে অ্যাপ বন্ধ।\n7. প্রথম ক্যান্ডেলের সিগন্যালের সময় ঘড়ি ঠিক আছে কি না দেখে নিও: বাবলের ⏱ ও Expert Option-এর টাইমার মেলে কি না। না মিললে ঘড়ির সমন্বয় বদলাও।</string>
+
+    <string name="stats_total">মোট সিগন্যাল: %1$s  |  যাচাই হয়েছে: %2$s\n</string>
+    <string name="stats_counts">জিত %1$s  হার %2$s  টাই %3$s  বাতিল %4$s  অপেক্ষায় %5$s\n</string>
+    <string name="stats_winrate">Win rate: %1$s%%  (৯৫%% সীমা %2$s–%3$s%%)\n</string>
+    <string name="stats_be">ব্রেক-ইভেন: %1$s%% (পেআউট %2$s%%)\n</string>
+    <string name="stats_profit">সমান স্টেকে লাভ/ক্ষতি: %s স্টেক\n</string>
+    <string name="stats_verdict">সিদ্ধান্ত: </string>
+    <string name="baseline_head">বেসলাইন (সব মিনিট, সিগন্যাল নির্বিশেষে): %s মিনিট\n</string>
+    <string name="baseline_updown">১ মিনিটে দাম বেড়েছে %1$s%% | কমেছে %2$s%%</string>
+    <string name="baseline_same">\nআগের মিনিটের দিকেই আবার গেছে: %1$s%% (৯৫%% সীমা %2$s–%3$s%%, n=%4$s)</string>
+    <string name="setup_head">সেটআপ অনুযায়ী (১৪টা সেটআপ তুলনার জন্য কড়া সীমা z=2.9; একই সিগন্যাল একাধিক সেটআপে গোনা হয়):\n</string>
+    <string name="skips">WAIT/স্কিপ: %s</string>
+    <string name="recent_title">সাম্প্রতিক সিগন্যাল (ট্যাপ করে ফলাফল বদলাও)</string>
+    <string name="res_win">✅ জিত</string>
+    <string name="res_loss">❌ হার</string>
+    <string name="res_tie">➖ টাই</string>
+    <string name="res_void">❔ বাতিল</string>
+    <string name="res_pending">⏳ অপেক্ষা</string>
+
+    <string name="verdict_few">নমুনা কম (%1$s/%2$s): এখনই সিদ্ধান্ত নয়</string>
+    <string name="verdict_above">✅ নিচের সীমা ব্রেক-ইভেনের ওপরে (তবুও ডেমো ও রিয়েল আলাদা)</string>
+    <string name="verdict_below">❌ ব্রেক-ইভেনের নিচে: লোকসানের কৌশল</string>
+    <string name="verdict_unsure">⚠ অনিশ্চিত: আরও নমুনা লাগবে</string>
+
+    <string name="toast_already">Super Shot আগে থেকেই চলছে</string>
+    <string name="toast_overlay">Overlay অনুমতি চালু করে ব্যাক করো</string>
+    <string name="toast_capture_denied">স্ক্রিন ক্যাপচারের অনুমতি দেওয়া হয়নি</string>
+
+    <!-- সার্ভিস: বাবল, নোটিফিকেশন, টোস্ট -->
+    <string name="svc_started">Super Shot চালু</string>
+    <string name="svc_error">শুরু করতে সমস্যা: %s</string>
+    <string name="notif_title">Super Shot চলছে</string>
+    <string name="notif_text">প্রতি ক্যান্ডেলের শেষে সিগন্যাল বিশ্লেষণ হচ্ছে</string>
+    <string name="hist_rate">আগে %1$s%% (n=%2$s)</string>
+    <string name="hist_few">আগে: নমুনা %sটি</string>
+    <string name="manual_signal_note">\n(ম্যানুয়াল, লগ হয়নি)</string>
+    <string name="manual_wait_note">\n(ম্যানুয়াল)</string>
+    <string name="bubble_running">▶ চলছে</string>
+
+    <string name="reason_no_setup">সেটআপ নেই</string>
+    <string name="reason_conflict">সংঘাত (UP+DOWN)</string>
+    <string name="reason_need_more">আরও নিশ্চিতকরণ চাই</string>
+    <string name="reason_few_candles">ক্যান্ডেল কম, জুম আউট করো</string>
+    <string name="reason_hidden_candle">শেষ ক্যান্ডেল ঢাকা</string>
+    <string name="reason_no_chart">চার্ট পাওয়া যায়নি</string>
+    <string name="reason_flat_market">বাজার স্থির</string>
+</resources>
