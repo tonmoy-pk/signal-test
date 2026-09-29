@@ -6,7 +6,7 @@
     <string name="platform_label">Platform</string>
     <string name="platform_eo">Expert Option</string>
     <string name="platform_quotex">Quotex</string>
-    <string name="platform_note">Close Quotex's promo banner (tap X) before you start.</string>
+    <string name="platform_note">Close Quotex\'s promo banner (tap X) before you start.</string>
 
     <!-- Main screen -->
     <string name="status_running">● Running</string>

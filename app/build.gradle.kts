@@ -11,8 +11,8 @@ android {
         applicationId = "com.supershot.app"
         minSdk = 29
         targetSdk = 34
-        versionCode = 8
-        versionName = "0.2.5"
+        versionCode = 9
+        versionName = "0.2.6"
     }
 
     signingConfigs {
