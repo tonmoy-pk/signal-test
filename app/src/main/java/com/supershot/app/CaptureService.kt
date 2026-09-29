@@ -245,7 +245,7 @@ class CaptureService : Service() {
         val h = bmp.height
         val px = IntArray(w * h)
         bmp.getPixels(px, 0, w, 0, 0, w, h)
-        val reading = ChartReader.read(px, w, h)
+        val reading = ChartReader.read(px, w, h, com.supershot.app.engine.Profile.forPlatform(Prefs.platform(this)))
         val an = SignalEngine.analyze(reading, Prefs.minSetups(this))
         val ts = System.currentTimeMillis()
         val tf = Prefs.tfMin(this)

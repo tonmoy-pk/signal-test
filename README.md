@@ -1,9 +1,11 @@
-# Super Shot v0.2.4
+# Super Shot v0.2.5
 
 Expert Option চার্ট স্ক্রিন-ক্যাপচার করে ক্যান্ডেল পড়ে, প্রতি ক্যান্ডেল শেষের আগে UP / DOWN / WAIT দেখায়
 এবং ২ ক্যান্ডেল পরে নিজে জিত/হার লগ করে। অ্যাপ বাংলা ও English দুই ভাষায় চলে (মূল স্ক্রিনের ওপরে থেকে ভাষা বাছাই)।
 
 Build: GitHub-এ push (branch main) -> Actions -> "Build APK" -> artifact "supershot-apk".
+
+Platform: মূল স্ক্রিনে Expert Option / Quotex বেছে নেওয়া যায় (engine/Model.kt-এর Profile.EXPERT_OPTION / Profile.QUOTEX)। Quotex-এর ক্যালিব্রেশন ব্যবহারকারীর পাঠানো স্ক্রিনশট থেকে পিক্সেল মেপে করা, কিন্তু এখনো আসল ডিভাইসে টেস্ট হয়নি — প্রথমবার signal ভুল দিলে debug ছবি (Pictures/SuperShot) পাঠালে roiTop/roiBottom/রং ঠিক করে দেওয়া যাবে। Quotex-এ শুরুর আগে প্রোমো ব্যানার বন্ধ করতে হবে।
 
 ভাষা: app/src/main/res/values/strings.xml (English), values-bn/strings.xml (বাংলা)। নতুন লেখা যোগ করলে দুই ফাইলেই একই key দিতে হবে।
 

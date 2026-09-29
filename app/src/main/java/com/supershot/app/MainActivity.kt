@@ -100,6 +100,34 @@ class MainActivity : Activity() {
             })
         }
         root.addView(langRow)
+
+        val platRow = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        platRow.addView(
+            TextView(this).apply {
+                text = tr(R.string.platform_label)
+                textSize = 14f
+            },
+            LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+        )
+        for ((code, nameId) in listOf("eo" to R.string.platform_eo, "quotex" to R.string.platform_quotex)) {
+            platRow.addView(Button(this).apply {
+                val name = tr(nameId)
+                text = if (Prefs.platform(this@MainActivity) == code) "● $name" else name
+                setOnClickListener {
+                    if (Prefs.platform(this@MainActivity) != code) {
+                        Prefs.setPlatform(this@MainActivity, code)
+                        recreate()
+                    }
+                }
+            })
+        }
+        root.addView(platRow)
+        if (Prefs.platform(this) == "quotex") {
+            root.addView(label(tr(R.string.platform_note), 12f, false, 4))
+        }
         statusView = label("", 16f, true, 8)
         root.addView(statusView)
 

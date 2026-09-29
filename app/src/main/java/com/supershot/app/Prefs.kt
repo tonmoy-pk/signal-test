@@ -33,4 +33,8 @@ object Prefs {
     /** অ্যাপের ভাষা: "bn" বা "en" (ডিফল্ট বাংলা) */
     fun lang(c: Context): String = sp(c).getString("lang", Lang.BN) ?: Lang.BN
     fun setLang(c: Context, v: String) = sp(c).edit().putString("lang", v).apply()
+
+    /** ট্রেডিং প্ল্যাটফর্ম: "eo" (Expert Option) বা "quotex" */
+    fun platform(c: Context): String = sp(c).getString("platform", "eo") ?: "eo"
+    fun setPlatform(c: Context, v: String) = sp(c).edit().putString("platform", v).apply()
 }

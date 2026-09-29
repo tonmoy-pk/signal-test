@@ -3,6 +3,11 @@
 <resources>
     <string name="lang_label">ভাষা / Language</string>
 
+    <string name="platform_label">প্ল্যাটফর্ম</string>
+    <string name="platform_eo">Expert Option</string>
+    <string name="platform_quotex">Quotex</string>
+    <string name="platform_note">Quotex-এ শুরুর আগে ওপরের প্রোমো ব্যানার (X চেপে) বন্ধ করো।</string>
+
     <!-- মূল স্ক্রিন -->
     <string name="status_running">● চলছে</string>
     <string name="status_stopped">○ বন্ধ</string>
